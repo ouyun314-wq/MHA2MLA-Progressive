@@ -96,6 +96,9 @@ class MHA2MLADataArguments:
     hf_dataset_name_or_path: Optional[str] = field(
         default=None, metadata={"help": "Huggingface Dataset name or path"}
     )
+    hf_dataset_subset: Optional[str] = field(
+        default=None, metadata={"help": "Subset name for Huggingface Dataset (e.g. 'cosmopedia-v2')"}
+    )
     sequence_length: int = field(
         default=2048, metadata={"help": "Maximum sequence length"}
     )

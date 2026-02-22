@@ -36,7 +36,9 @@ def load_dataset(dataset_args, qknorm_args, tokenizer):
         import datasets
 
         dataset = datasets.load_dataset(
-            dataset_args.dataset_name_or_path, split="train"
+            dataset_args.hf_dataset_name_or_path,
+            name=dataset_args.hf_dataset_subset,
+            split="train",
         )
 
     return dataset

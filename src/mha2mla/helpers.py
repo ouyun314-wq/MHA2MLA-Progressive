@@ -83,7 +83,22 @@ def load_dataset(dataset_args, train_args, tokenizer):
         import datasets
 
         dataset = datasets.load_dataset(
-            dataset_args.dataset_name_or_path, split="train"
+            dataset_args.hf_dataset_name_or_path,
+            name=dataset_args.hf_dataset_subset,
+            split="train",
+        )
+
+        def tokenize_fn(examples):
+            return tokenizer(
+                examples["text"],
+                truncation=True,
+                max_length=dataset_args.sequence_length,
+            )
+
+        dataset = dataset.map(
+            tokenize_fn,
+            batched=True,
+            remove_columns=dataset.column_names,
         )
 
     return dataset
