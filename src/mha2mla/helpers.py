@@ -7,8 +7,6 @@ from functools import partial
 
 import torch
 import numpy as np
-from nanotron.data.nanoset import Nanoset
-from nanotron.logging import log_rank
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LambdaLR
 from transformers import get_scheduler
@@ -65,6 +63,7 @@ def load_dataset(dataset_args, train_args, tokenizer):
     """Load dataset from configuration."""
     tokenizer.model_max_length = dataset_args.sequence_length
     if dataset_args.is_nanoset:
+        from nanotron.data.nanoset import Nanoset
         token_size = 4 if len(tokenizer) > np.iinfo(np.uint16).max + 1 else 2
         world_size = int(os.environ.get("WORLD_SIZE", 1))
         global_batch_size = (
@@ -234,6 +233,7 @@ def lr_scheduler_builder(
         "Custom learning rate functions dont match the number of param groups"
     )
 
+    from nanotron.logging import log_rank
     log_rank(
         f"[Optimizer Building] There are total {len(lr_lambdas)} custom learning rate function for parameter groups",
         logger=logger,
