@@ -18,11 +18,11 @@ git+https://github.com/huggingface/nanotron.git@2cde8f63519f15aa449803441ec70225
 # Experiment tracking
 wandb==0.19.11
 
-# Evaluation (optional, install when needed)
-# lighteval @ git+https://github.com/huggingface/lighteval@ea46419a93fb390e8f694f7c6c64c1e684487c9d
-# jieba==0.42.1
-# rouge==1.0.1
-# fuzzywuzzy==0.18.0
-# pandas==2.2.3
-# matplotlib==3.10.0
-# seaborn==0.13.2
+# Evaluation
+lighteval @ git+https://github.com/huggingface/lighteval@ea46419a93fb390e8f694f7c6c64c1e684487c9d
+jieba==0.42.1
+rouge==1.0.1
+fuzzywuzzy==0.18.0
+pandas==2.2.3
+matplotlib==3.10.0
+seaborn==0.13.2
