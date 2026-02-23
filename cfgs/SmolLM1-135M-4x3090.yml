@@ -1,11 +1,11 @@
 # TrainingArguments
 seed: 42
-max_steps: 20  # will be overridden by sum(steps_per_stage)
-report_to: none
-run_name: smollm1-135m-progressive-4x3090-test
+max_steps: 3000
+report_to: wandb
+run_name: smollm1-135m-2norm_r_4-d_kv_8-4x3090
 save_strategy: steps
-save_steps: 100
-output_dir: ckpts/smollm1-135m-progressive-4x3090-test
+save_steps: 0.1
+output_dir: ckpts/smollm1-135m-2norm_r_4-d_kv_8-4x3090
 overwrite_output_dir: true
 logging_strategy: steps
 logging_steps: 1
@@ -29,22 +29,22 @@ weight_decay: 0.0
 use_constant_with_warmup_decay_scheduler: true
 lr_scheduler_kwargs:
   {
-    "lr_decay_starting_step": 20,
-    "lr_decay_steps": 0,
+    "lr_decay_starting_step": 2500,
+    "lr_decay_steps": 500,
     "lr_decay_style": "1-sqrt",
-    "lr_warmup_steps": 2,
+    "lr_warmup_steps": 300,
     "lr_warmup_style": "linear",
     "min_decay_lr": 0,
   }
 
 # ModelArguments
 model_name_or_path: HuggingFaceTB/SmolLM-135M
-partial_rope_version: 2-norm
+partial_rope_version: 2-norm # 'high'/'low'/'uniform'/'2-norm'
 rope_dim_for_mla: 4
-uniform_start_point: 0
+uniform_start_point: 0 # optional only for 'uniform'
 qk_tensor_path: utils/smollm1_135M-2_norm_rank.pth
-svd_init_method: joint
-low_rank: 16  # overridden by rank_schedule[0]
+svd_init_method: joint # 'split'/'joint'
+low_rank: 8
 is_baseline: false
 is_gqa2mha2mla: false
 
@@ -53,9 +53,4 @@ is_nanoset: false
 hf_dataset_name_or_path: HuggingFaceTB/smollm-corpus
 hf_dataset_subset: cosmopedia-v2
 sequence_length: 2048
-
-# ProgressiveCompressionArguments
-rank_schedule: [16, 8]
-steps_per_stage: [10, 10]
-warmup_steps_per_stage: [2, 2]
-reset_optimizer: true
+#hf_dataset_cache_dir: /root/autodl-tmp/huggingface_cache
