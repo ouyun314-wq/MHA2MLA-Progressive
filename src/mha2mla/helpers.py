@@ -85,6 +85,7 @@ def load_dataset(dataset_args, train_args, tokenizer):
             dataset_args.hf_dataset_name_or_path,
             name=dataset_args.hf_dataset_subset,
             split="train",
+            cache_dir=dataset_args.hf_dataset_cache_dir,
         )
 
         def tokenize_fn(examples):
