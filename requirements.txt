@@ -26,3 +26,4 @@ fuzzywuzzy==0.18.0
 pandas==2.2.3
 matplotlib==3.10.0
 seaborn==0.13.2
+word2number==1.1
