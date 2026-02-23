@@ -88,6 +88,16 @@ def load_dataset(dataset_args, train_args, tokenizer):
             cache_dir=dataset_args.hf_dataset_cache_dir,
         )
 
+        world_size = int(os.environ.get("WORLD_SIZE", 1))
+        total_samples = (
+            train_args.per_device_train_batch_size
+            * world_size
+            * train_args.gradient_accumulation_steps
+            * train_args.max_steps
+        )
+        if total_samples < len(dataset):
+            dataset = dataset.select(range(total_samples))
+
         def tokenize_fn(examples):
             return tokenizer(
                 examples["text"],
@@ -99,6 +109,7 @@ def load_dataset(dataset_args, train_args, tokenizer):
             tokenize_fn,
             batched=True,
             remove_columns=dataset.column_names,
+            num_proc=min(os.cpu_count(), 8),
         )
 
     return dataset
