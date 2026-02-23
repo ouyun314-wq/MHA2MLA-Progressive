@@ -1,5 +1,19 @@
 import argparse
 import os, sys
+from unittest.mock import MagicMock
+
+# Mock nanotron to avoid Python 3.12 incompatibility
+sys.modules["nanotron"] = MagicMock()
+sys.modules["nanotron.config"] = MagicMock()
+sys.modules["nanotron.config.config"] = MagicMock()
+sys.modules["nanotron.config.lighteval_config"] = MagicMock()
+sys.modules["nanotron.config.parallelism_config"] = MagicMock()
+sys.modules["nanotron.config.utils_config"] = MagicMock()
+sys.modules["nanotron.parallel"] = MagicMock()
+sys.modules["nanotron.parallel.pipeline_parallel"] = MagicMock()
+sys.modules["nanotron.parallel.pipeline_parallel.engine"] = MagicMock()
+sys.modules["nanotron.optim"] = MagicMock()
+sys.modules["nanotron.optim.zero"] = MagicMock()
 
 from transformers.modeling_utils import load_sharded_checkpoint
 
