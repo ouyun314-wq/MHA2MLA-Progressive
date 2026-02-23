@@ -2,18 +2,20 @@ import argparse
 import os, sys
 from unittest.mock import MagicMock
 
-# Mock nanotron to avoid Python 3.12 incompatibility
-sys.modules["nanotron"] = MagicMock()
-sys.modules["nanotron.config"] = MagicMock()
-sys.modules["nanotron.config.config"] = MagicMock()
-sys.modules["nanotron.config.lighteval_config"] = MagicMock()
-sys.modules["nanotron.config.parallelism_config"] = MagicMock()
-sys.modules["nanotron.config.utils_config"] = MagicMock()
-sys.modules["nanotron.parallel"] = MagicMock()
-sys.modules["nanotron.parallel.pipeline_parallel"] = MagicMock()
-sys.modules["nanotron.parallel.pipeline_parallel.engine"] = MagicMock()
-sys.modules["nanotron.optim"] = MagicMock()
-sys.modules["nanotron.optim.zero"] = MagicMock()
+# Auto-mock all nanotron submodules to avoid Python 3.12 incompatibility
+_nanotron_mock = MagicMock()
+_original_import = __builtins__.__import__ if hasattr(__builtins__, '__import__') else __import__
+
+def _patched_import(name, *args, **kwargs):
+    if name == "nanotron" or name.startswith("nanotron."):
+        if name not in sys.modules:
+            sys.modules[name] = MagicMock()
+        return sys.modules[name]
+    return _original_import(name, *args, **kwargs)
+
+import builtins
+builtins.__import__ = _patched_import
+sys.modules["nanotron"] = _nanotron_mock
 
 from transformers.modeling_utils import load_sharded_checkpoint
 
