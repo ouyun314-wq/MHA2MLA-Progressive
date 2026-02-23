@@ -1,8 +1,10 @@
+import gc
 import os
 import argparse
 from dataclasses import asdict
 
 import torch
+from accelerate.state import AcceleratorState
 from transformers import (
     AutoConfig,
     AutoTokenizer,
@@ -114,8 +116,15 @@ def main():
               f"rank={current_rank}, steps={current_steps}, warmup={current_warmup}")
         print(f"{'='*60}")
 
-        # 6a. Recompress if not the first stage
+        # 6a. Clean up previous Trainer's accelerator state & recompress
         if stage_idx > 0:
+            # Must reset accelerator singleton so a new Trainer can
+            # re-initialize DeepSpeed for this stage.
+            del trainer
+            gc.collect()
+            torch.cuda.empty_cache()
+            AcceleratorState._reset_state()
+
             recompress_model(
                 model=model,
                 new_low_rank=current_rank,
