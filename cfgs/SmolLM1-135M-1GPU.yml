@@ -53,4 +53,4 @@ hf_dataset_name_or_path: HuggingFaceTB/smollm-corpus
 hf_dataset_subset: cosmopedia-v2
 sequence_length: 2048
  # DataArguments
-hf_dataset_cache_dir: /root/autodl-tmp/huggingface_cache
+#hf_dataset_cache_dir: /root/autodl-tmp/huggingface_cache
