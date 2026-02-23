@@ -1,6 +1,6 @@
 # TrainingArguments
 seed: 42
-max_steps: 12000
+max_steps: 500
 report_to: wandb
 run_name: smollm1-135m-low_r_4-d_kv_8-1gpu
 save_strategy: steps
@@ -28,10 +28,10 @@ weight_decay: 0.0
 use_constant_with_warmup_decay_scheduler: true
 lr_scheduler_kwargs:
   {
-    "lr_decay_starting_step": 10000,
-    "lr_decay_steps": 2000,
+    "lr_decay_starting_step": 400,
+    "lr_decay_steps": 100,
     "lr_decay_style": "1-sqrt",
-    "lr_warmup_steps": 1200,
+    "lr_warmup_steps": 50,
     "lr_warmup_style": "linear",
     "min_decay_lr": 0,
   }
