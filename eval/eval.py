@@ -2,6 +2,14 @@ import argparse
 import os, sys
 import importlib
 import importlib.util
+import aiohttp
+
+# Increase fsspec/aiohttp download timeout to 30 minutes
+aiohttp.ClientTimeout.DEFAULT_TIMEOUT = 1800
+os.environ["AIOHTTP_CLIENT_TIMEOUT"] = "1800"
+import fsspec.config
+fsspec.config.conf["connect_timeout"] = 1800
+fsspec.config.conf["read_timeout"] = 1800
 
 # Prevent nanotron from being detected/imported (incompatible with Python 3.12)
 _orig_find_spec = importlib.util.find_spec
